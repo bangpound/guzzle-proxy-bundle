@@ -1,0 +1,20 @@
+{
+    "name": "bangpound/guzzle-proxy-bundle",
+    "description": "Proxy requests through Symfony application",
+    "require": {
+        "guzzle/guzzle": "~3.7"
+    },
+    "autoload": {
+        "psr-0": {
+            "Bangpound\\Bundle\\GuzzleProxyBundle\\": ""
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjamin Doherty",
+            "email": "bjd@bangpound.org"
+        }
+    ],
+    "target-dir": "Bangpound/Bundle/GuzzleProxyBundle"
+}
