@@ -32,8 +32,6 @@ class DefaultController extends Controller
             ->setQuery($request->getQueryString());
 
         $client = new Client();
-        /** @var $httpRequest \Guzzle\Http\Message\Request */
-        /** @var $httpResponse \Guzzle\Http\Message\Response */
         $httpRequest = $client->createRequest($request->getMethod(), $url, null, $request->getContent());
         try {
             $httpResponse = $httpRequest->send();
