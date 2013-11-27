@@ -2,8 +2,7 @@
 
 namespace Bangpound\Bundle\GuzzleProxyBundle\Routing;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -11,7 +10,7 @@ use Symfony\Component\Routing\RouteCollection;
  * Class ProxyLoader
  * @package Bangpound\Bundle\GuzzleProxyBundle\Routing
  */
-class ProxyLoader implements LoaderInterface
+class ProxyLoader extends Loader
 {
     private $endpoints;
 
@@ -59,25 +58,5 @@ class ProxyLoader implements LoaderInterface
     public function supports($resource, $type = null)
     {
         return 'guzzle_proxy' === $type;
-    }
-
-    /**
-     * Gets the loader resolver.
-     *
-     * @return LoaderResolverInterface A LoaderResolverInterface instance
-     */
-    public function getResolver()
-    {
-        // TODO: Implement getResolver() method.
-    }
-
-    /**
-     * Sets the loader resolver.
-     *
-     * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-        // TODO: Implement setResolver() method.
     }
 }
