@@ -1,3 +1,0 @@
-bangpound_guzzle_proxy:
-    resource: .
-    type: guzzle_proxy
