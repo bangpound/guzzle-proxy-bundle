@@ -23,11 +23,9 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request, $endpoint, $path)
     {
-        $endpoint = $this->container->getParameter('bangpound_guzzle_proxy.endpoints')[$endpoint];
-
         // URL of the proxied service is extracted from the options. The requested path
         // and query string are attached.
-        $url = Url::factory($endpoint['host']);
+        $url = Url::factory($endpoint);
         $url->addPath($path)
             ->setQuery($request->getQueryString());
 
