@@ -5,7 +5,7 @@
         "guzzle/guzzle": "~3.7"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Bangpound\\Bundle\\GuzzleProxyBundle\\": ""
         }
     },
@@ -15,6 +15,5 @@
             "name": "Benjamin Doherty",
             "email": "bjd@bangpound.org"
         }
-    ],
-    "target-dir": "Bangpound/Bundle/GuzzleProxyBundle"
+    ]
 }
