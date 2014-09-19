@@ -15,5 +15,10 @@
             "name": "Benjamin Doherty",
             "email": "bjd@bangpound.org"
         }
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
 }
