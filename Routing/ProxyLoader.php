@@ -12,16 +12,6 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ProxyLoader extends Loader
 {
-    private $endpoints;
-
-    /**
-     * @param $config
-     */
-    public function __construct($config)
-    {
-        $this->endpoints = $config;
-    }
-
     /**
      * Loads a resource.
      *

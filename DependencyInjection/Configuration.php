@@ -22,12 +22,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('endpoint')
+                ->arrayNode('endpoints')
                     ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->children()
-                            ->scalarNode('host')->end()
-                        ->end()
+                    ->prototype('variable')
                     ->end()
                 ->end()
             ->end()

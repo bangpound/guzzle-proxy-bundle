@@ -5,7 +5,6 @@ parameters:
 services:
     bangpound_guzzle_proxy.routing_loader:
         class: %bangpound_guzzle_proxy.routing_loader.class%
-        arguments: [ %bangpound_guzzle_proxy.endpoints% ]
         tags:
             - { name: routing.loader }
 
