@@ -4,9 +4,9 @@ namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Url;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class GuzzleController
@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class GuzzleController
 {
     /**
-     * @param  Request          $request
+     * @param  Request           $request
      * @param $endpoint
      * @param $path
-     * @return StreamedResponse
+     * @return ResponseInterface
      */
     public function proxyAction(Request $request, $endpoint, $path)
     {
@@ -45,17 +45,6 @@ class GuzzleController
         $request->attributes->set('guzzle_request', $httpRequest);
         $request->attributes->set('guzzle_response', $httpResponse);
 
-        $statusCode = $httpResponse->getStatusCode();
-
-        // This cannot handle every response. Chunked transfer encoding would necessitate
-        // a streaming response.
-        $headers = $httpResponse->getHeaders();
-
-        return new StreamedResponse(function () use ($httpResponse) {
-            $body = $httpResponse->getBody();
-            while (!$body->eof()) {
-                echo $body->read(256);
-            }
-        }, $statusCode, $headers);
+        return $httpResponse;
     }
 }
