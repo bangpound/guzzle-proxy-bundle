@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @param $endpoint
      * @param $path
      * @return Response
