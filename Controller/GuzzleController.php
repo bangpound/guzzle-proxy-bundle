@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Url;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class GuzzleController
@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 class GuzzleController
 {
     /**
-     * @param  Request  $request
+     * @param  Request          $request
      * @param $endpoint
      * @param $path
-     * @return Response
+     * @return StreamedResponse
      */
     public function proxyAction(Request $request, $endpoint, $path)
     {
@@ -45,14 +45,17 @@ class GuzzleController
         $request->attributes->set('guzzle_request', $httpRequest);
         $request->attributes->set('guzzle_response', $httpResponse);
 
-        $body = $httpResponse->getBody();
         $statusCode = $httpResponse->getStatusCode();
 
         // This cannot handle every response. Chunked transfer encoding would necessitate
         // a streaming response.
         $headers = $httpResponse->getHeaders();
-        unset($headers['Transfer-Encoding']);
 
-        return new Response($body, $statusCode, $headers);
+        return new StreamedResponse(function () use ($httpResponse) {
+            $body = $httpResponse->getBody();
+            while (!$body->eof()) {
+                echo $body->read(256);
+            }
+        }, $statusCode, $headers);
     }
 }
