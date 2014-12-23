@@ -23,16 +23,16 @@ class ProxyLoader extends Loader
     {
         $routes = new RouteCollection();
 
-        $pattern = '/{endpoint}/{path}';
+        $pattern = '/{path}';
         $defaults = array(
-            '_controller' => 'BangpoundGuzzleProxyBundle:Default:index',
+            '_controller' => 'bangpound_guzzle_proxy.client.'.$resource.':send',
+            '_guzzle_proxy' => $resource,
         );
         $requirements = array(
-            'endpoint' => implode('|', array_keys($this->endpoints)),
-            'path' => '.*?',
+            'path' => '.+?',
         );
         $route = new Route($pattern, $defaults, $requirements);
-        $routes->add('bangpound_guzzle_proxy_endpoint', $route);
+        $routes->add('_guzzle_proxy_'.$resource, $route);
 
         return $routes;
     }
