@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class DefaultController
+ * Class GuzzleController
  * @package Bangpound\Bundle\GuzzleProxyBundle\Controller
  */
-class DefaultController
+class GuzzleController
 {
     /**
      * @param  Request  $request
@@ -20,7 +20,7 @@ class DefaultController
      * @param $path
      * @return Response
      */
-    public function indexAction(Request $request, $endpoint, $path)
+    public function proxyAction(Request $request, $endpoint, $path)
     {
         // URL of the proxied service is extracted from the options. The requested path
         // and query string are attached.
