@@ -2,7 +2,6 @@
 
 namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Guzzle\Http\Client;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Url;
@@ -13,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class DefaultController
  * @package Bangpound\Bundle\GuzzleProxyBundle\Controller
  */
-class DefaultController extends Controller
+class DefaultController
 {
     /**
      * @param Request $request
