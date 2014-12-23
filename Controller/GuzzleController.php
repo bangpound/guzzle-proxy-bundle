@@ -2,9 +2,9 @@
 
 namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 
-use Guzzle\Http\Client;
-use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Url;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Url;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,14 +24,18 @@ class GuzzleController
     {
         // URL of the proxied service is extracted from the options. The requested path
         // and query string are attached.
-        $url = Url::factory($endpoint);
-        $url->addPath($path)
-            ->setQuery($request->getQueryString());
+        $url = Url::fromString($endpoint);
+        $url->addPath($path);
+        if ($request->server->has('QUERY_STRING')) {
+            $url->setQuery($request->getQueryString(), true);
+        }
 
         $client = new Client();
-        $httpRequest = $client->createRequest($request->getMethod(), $url, null, $request->getContent());
+        $httpRequest = $client->createRequest($request->getMethod(), $url, array(
+            'body' => $request->getContent(),
+        ));
         try {
-            $httpResponse = $httpRequest->send();
+            $httpResponse = $client->send($httpRequest);
         } catch (BadResponseException $e) {
             $httpResponse = $e->getResponse();
         }
@@ -41,12 +45,12 @@ class GuzzleController
         $request->attributes->set('guzzle_request', $httpRequest);
         $request->attributes->set('guzzle_response', $httpResponse);
 
-        $body = $httpResponse->getBody(true);
+        $body = $httpResponse->getBody();
         $statusCode = $httpResponse->getStatusCode();
 
         // This cannot handle every response. Chunked transfer encoding would necessitate
         // a streaming response.
-        $headers = $httpResponse->getHeaders()->toArray();
+        $headers = $httpResponse->getHeaders();
         unset($headers['Transfer-Encoding']);
 
         return new Response($body, $statusCode, $headers);

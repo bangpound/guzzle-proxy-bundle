@@ -2,7 +2,7 @@
     "name": "bangpound/guzzle-proxy-bundle",
     "description": "Proxy requests through Symfony application",
     "require": {
-        "guzzle/guzzle": "~3.7",
+        "guzzlehttp/guzzle": "~5.1",
         "symfony/config": "~2.3",
         "symfony/dependency-injection": "~2.3",
         "symfony/http-foundation": "~2.3",
