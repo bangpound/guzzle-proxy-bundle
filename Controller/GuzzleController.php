@@ -40,11 +40,6 @@ class GuzzleController
             $httpResponse = $e->getResponse();
         }
 
-        // Stash the prepared Guzzle request and response in the Symfony request attributes
-        // for debugging.
-        $request->attributes->set('guzzle_request', $httpRequest);
-        $request->attributes->set('guzzle_response', $httpResponse);
-
         return $httpResponse;
     }
 }
