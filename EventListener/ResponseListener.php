@@ -6,7 +6,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
-class GuzzleResponseListener
+class ResponseListener
 {
     /**
      * @param GetResponseForControllerResultEvent $event
