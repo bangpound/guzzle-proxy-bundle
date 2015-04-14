@@ -7,16 +7,16 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 /**
- * Class ProxyLoader
- * @package Bangpound\Bundle\GuzzleProxyBundle\Routing
+ * Class ProxyLoader.
  */
 class ProxyLoader extends Loader
 {
     /**
      * Loads a resource.
      *
-     * @param  mixed                                      $resource The resource
-     * @param  string                                     $type     The resource type
+     * @param mixed  $resource The resource
+     * @param string $type     The resource type
+     *
      * @return \Symfony\Component\Routing\RouteCollection
      */
     public function load($resource, $type = null)
