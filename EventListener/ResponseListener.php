@@ -3,7 +3,7 @@
 namespace Bangpound\Bundle\GuzzleProxyBundle\EventListener;
 
 use GuzzleHttp\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 
 class ResponseListener
@@ -16,12 +16,7 @@ class ResponseListener
         $result = $event->getControllerResult();
 
         if ($result instanceof ResponseInterface) {
-            $event->setResponse(new StreamedResponse(function () use ($result) {
-                $body = $result->getBody();
-                while (!$body->eof()) {
-                    echo $body->read(256);
-                }
-            }, $result->getStatusCode(), $result->getHeaders()));
+            $event->setResponse(new Response((string) $result->getBody(), $result->getStatusCode(), $result->getHeaders()));
         }
     }
 }
