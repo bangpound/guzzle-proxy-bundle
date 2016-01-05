@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader;
 class BangpoundGuzzleProxyExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
