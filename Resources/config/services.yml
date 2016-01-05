@@ -1,25 +1,17 @@
 parameters:
     bangpound_guzzle_proxy.routing_loader.class: Bangpound\Bundle\GuzzleProxyBundle\Routing\ProxyLoader
     bangpound_guzzle_proxy.client.class: GuzzleHttp\Client
-    bangpound_guzzle_proxy.listener.controller.class: Bangpound\Bundle\GuzzleProxyBundle\EventListener\ControllerListener
-    bangpound_guzzle_proxy.listener.response.class: Bangpound\Bundle\GuzzleProxyBundle\EventListener\ResponseListener
 
 services:
+    bangpound_guzzle_proxy.controller:
+        class: Bangpound\Bundle\GuzzleProxyBundle\Controller\ProxyController
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
     bangpound_guzzle_proxy.routing_loader:
         class: %bangpound_guzzle_proxy.routing_loader.class%
         tags:
             - { name: routing.loader }
-
-    bangpound_guzzle_proxy.listener.controller:
-        class: %bangpound_guzzle_proxy.listener.controller.class%
-        arguments: [ @service_container ]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
-    bangpound_guzzle_proxy.listener.response:
-        class: %bangpound_guzzle_proxy.listener.response.class%
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
 
     bangpound_guzzle_proxy.client:
         class: %bangpound_guzzle_proxy.client.class%

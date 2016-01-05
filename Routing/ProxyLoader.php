@@ -17,7 +17,7 @@ class ProxyLoader extends Loader
      * @param mixed  $resource The resource
      * @param string $type     The resource type
      *
-     * @return \Symfony\Component\Routing\RouteCollection
+     * @return RouteCollection
      */
     public function load($resource, $type = null)
     {
@@ -25,7 +25,8 @@ class ProxyLoader extends Loader
 
         $pattern = '/{path}';
         $defaults = array(
-            '_controller' => 'bangpound_guzzle_proxy.client.'.$resource.':send',
+            '_controller' => 'bangpound_guzzle_proxy.controller:proxy',
+            'endpoint' => $resource,
             '_guzzle_proxy' => $resource,
         );
         $requirements = array(
