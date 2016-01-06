@@ -6,7 +6,7 @@ services:
     bangpound_guzzle_proxy.controller:
         class: Bangpound\Bundle\GuzzleProxyBundle\Controller\ProxyController
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ "@service_container" ] ]
 
     bangpound_guzzle_proxy.routing_loader:
         class: %bangpound_guzzle_proxy.routing_loader.class%
