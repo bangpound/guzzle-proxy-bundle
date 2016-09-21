@@ -1,10 +1,11 @@
 parameters:
+    bangpound_guzzle_proxy.controller.class: Bangpound\Bundle\GuzzleProxyBundle\Controller\ProxyController
     bangpound_guzzle_proxy.routing_loader.class: Bangpound\Bundle\GuzzleProxyBundle\Routing\ProxyLoader
     bangpound_guzzle_proxy.client.class: GuzzleHttp\Client
 
 services:
     bangpound_guzzle_proxy.controller:
-        class: Bangpound\Bundle\GuzzleProxyBundle\Controller\ProxyController
+        class: %bangpound_guzzle_proxy.controller.class%
         calls:
             - [ setContainer, [ "@service_container" ] ]
 
