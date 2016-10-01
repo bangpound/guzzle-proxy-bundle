@@ -5,17 +5,17 @@ parameters:
 
 services:
     bangpound_guzzle_proxy.controller:
-        class: %bangpound_guzzle_proxy.controller.class%
+        class: '%bangpound_guzzle_proxy.controller.class%'
         calls:
             - [ setContainer, [ "@service_container" ] ]
 
     bangpound_guzzle_proxy.routing_loader:
-        class: %bangpound_guzzle_proxy.routing_loader.class%
+        class: '%bangpound_guzzle_proxy.routing_loader.class%'
         tags:
             - { name: routing.loader }
 
     bangpound_guzzle_proxy.client:
-        class: %bangpound_guzzle_proxy.client.class%
+        class: '%bangpound_guzzle_proxy.client.class%'
         arguments:
             -
                 base_url: ~
