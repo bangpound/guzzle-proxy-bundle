@@ -6,10 +6,12 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class ProxyController extends Controller
+class ProxyController
 {
+    use ContainerAwareTrait;
+
     /**
      * @param $endpoint
      * @param ServerRequestInterface $request
