@@ -16,7 +16,4 @@ services:
 
     bangpound_guzzle_proxy.client:
         class: '%bangpound_guzzle_proxy.client.class%'
-        arguments:
-            -
-                base_url: ~
         abstract: true
