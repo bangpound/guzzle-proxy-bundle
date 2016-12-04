@@ -49,6 +49,11 @@ class ProxyController
             'stream' => true,
         ]);
 
+        foreach ($response->getHeader('Set-Cookie') as $cookie) {
+            $cookie = SetCookie::fromString($cookie);
+            $cookie->setPath('/'.$path.$cookie->getPath());
+        }
+
         return $this->httpResponseFactory->createResponse($response);
     }
 }
