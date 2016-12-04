@@ -2,7 +2,9 @@
 
 namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 
+use Bangpound\Bundle\GuzzleProxyBundle\Factory\HttpFoundationFactory;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -11,6 +13,11 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 class ProxyController
 {
     use ContainerAwareTrait;
+
+    public function __construct()
+    {
+        $this->httpResponseFactory = new HttpFoundationFactory();
+    }
 
     /**
      * @param $endpoint
@@ -37,11 +44,11 @@ class ProxyController
             'uri' => $uri,
         ));
 
-        $response = $client->send($request);
-        if ($response->hasHeader('Transfer-Encoding')) {
-            $response = $response->withoutHeader('Transfer-Encoding');
-        }
+        $response = $client->send($request, [
+            'http_errors' => false,
+            'stream' => true,
+        ]);
 
-        return $response;
+        return $this->httpResponseFactory->createResponse($response);
     }
 }
