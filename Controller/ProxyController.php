@@ -3,7 +3,7 @@
 namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -25,15 +25,15 @@ class ProxyController
 
         $rel = $request->getAttribute('path');
         if ($request->getQueryParams()) {
-            $rel .= '?'.\GuzzleHttp\Psr7\build_query($request->getQueryParams());
+            $rel .= '?'.Psr7\build_query($request->getQueryParams());
         }
-        $rel = new Uri($rel);
+        $rel = new Psr7\Uri($rel);
 
         $uri = $client->getConfig('base_url');
-        $uri = new Uri($uri);
-        $uri = Uri::resolve($uri, $rel);
+        $uri = new Psr7\Uri($uri);
+        $uri = Psr7\Uri::resolve($uri, $rel);
 
-        $request = \GuzzleHttp\Psr7\modify_request($request, array(
+        $request = Psr7\modify_request($request, array(
             'uri' => $uri,
         ));
 
