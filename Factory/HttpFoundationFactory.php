@@ -14,6 +14,7 @@ class HttpFoundationFactory extends BaseHttpFoundationFactory
      * @param ResponseInterface $psrResponse
      *
      * @return StreamedResponse
+     *
      * @throws \RuntimeException
      */
     public function createResponse(ResponseInterface $psrResponse)
@@ -47,6 +48,7 @@ class HttpFoundationFactory extends BaseHttpFoundationFactory
      * @param string $cookie
      *
      * @return Cookie
+     *
      * @throws \InvalidArgumentException
      */
     private function createCookie($cookie)
