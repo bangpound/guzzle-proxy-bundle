@@ -5,14 +5,25 @@ namespace Bangpound\Bundle\GuzzleProxyBundle\Controller;
 use Bangpound\Bundle\GuzzleProxyBundle\Factory\HttpFoundationFactory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\SetCookie;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
-class ProxyController
+class ProxyController implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
+
+    /**
+     * @var HttpFoundationFactory
+     */
+    private $httpResponseFactory;
 
     public function __construct()
     {
@@ -21,16 +32,24 @@ class ProxyController
 
     /**
      * @param $endpoint
-     * @param ServerRequestInterface $request
+     * @param RequestInterface|ServerRequestInterface $request
      *
-     * @return ResponseInterface
+     * @return Response
+     *
+     * @throws ServiceUnavailableHttpException
      */
-    public function proxy($endpoint, ServerRequestInterface $request)
+    public function proxy($endpoint, $path, ServerRequestInterface $request)
     {
-        /** @var ClientInterface $client */
-        $client = $this->container->get('bangpound_guzzle_proxy.client.'.$endpoint);
+        try {
+            /** @var ClientInterface $client */
+            $client = $this->container->get('bangpound_guzzle_proxy.client.'.$endpoint);
+        } catch (ServiceCircularReferenceException $e) {
+            throw new ServiceUnavailableHttpException();
+        } catch (ServiceNotFoundException $e) {
+            throw new ServiceUnavailableHttpException();
+        }
 
-        $rel = $request->getAttribute('path');
+        $rel = $path;
         if ($request->getQueryParams()) {
             $rel .= '?'.Psr7\build_query($request->getQueryParams());
         }
@@ -40,20 +59,23 @@ class ProxyController
         $uri = new Psr7\Uri($uri);
         $uri = Psr7\Uri::resolve($uri, $rel);
 
-        $request = Psr7\modify_request($request, array(
+        $request = Psr7\modify_request($request, [
             'uri' => $uri,
-        ));
-
-        $response = $client->send($request, [
-            'http_errors' => false,
-            'stream' => true,
         ]);
 
-        foreach ($response->getHeader('Set-Cookie') as $cookie) {
-            $cookie = SetCookie::fromString($cookie);
-            $cookie->setPath('/'.$path.$cookie->getPath());
-        }
+        try {
+            $response = $client->send($request, [
+              'http_errors' => false,
+              'stream' => true,
+            ]);
+            foreach ($response->getHeader('Set-Cookie') as $cookie) {
+                $cookie = SetCookie::fromString($cookie);
+                $cookie->setPath('/'.$path.$cookie->getPath());
+            }
 
-        return $this->httpResponseFactory->createResponse($response);
+            return $this->httpResponseFactory->createResponse($response);
+        } catch (GuzzleException $e) {
+            throw new ServiceUnavailableHttpException();
+        }
     }
 }
