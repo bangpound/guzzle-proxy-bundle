@@ -22,6 +22,7 @@ class HttpFoundationFactory extends \Symfony\Bridge\PsrHttpMessage\Factory\HttpF
             while (!$stream->eof()) {
                 echo $stream->read($stream->getMetadata('unread_bytes') ?: 128);
                 flush();
+                ob_flush();
             }
             $stream->close();
         };
