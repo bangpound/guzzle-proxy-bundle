@@ -4,15 +4,17 @@ namespace Bangpound\Bundle\GuzzleProxyBundle\Factory;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory as BaseHttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class HttpFoundationFactory extends \Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
+class HttpFoundationFactory extends BaseHttpFoundationFactory
 {
     /**
      * @param ResponseInterface $psrResponse
      *
      * @return StreamedResponse
+     * @throws \RuntimeException
      */
     public function createResponse(ResponseInterface $psrResponse)
     {
@@ -45,6 +47,7 @@ class HttpFoundationFactory extends \Symfony\Bridge\PsrHttpMessage\Factory\HttpF
      * @param string $cookie
      *
      * @return Cookie
+     * @throws \InvalidArgumentException
      */
     private function createCookie($cookie)
     {
