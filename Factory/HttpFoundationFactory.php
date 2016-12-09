@@ -22,12 +22,7 @@ class HttpFoundationFactory extends BaseHttpFoundationFactory
         /** @var StreamInterface $stream */
         $stream = $psrResponse->getBody();
         $callback = function () use ($stream) {
-            while (!$stream->eof()) {
-                echo $stream->read($stream->getMetadata('unread_bytes') ?: 128);
-                flush();
-                ob_flush();
-            }
-            $stream->close();
+            echo (string) $stream;
         };
 
         $response = new StreamedResponse(

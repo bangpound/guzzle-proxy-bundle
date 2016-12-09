@@ -51,7 +51,8 @@ class ProxyController implements ContainerAwareInterface
 
         $rel = $path;
         if ($request->getQueryParams()) {
-            $rel .= '?'.Psr7\build_query($request->getQueryParams());
+            $params = $request->getQueryParams();
+            $rel .= '?'.Psr7\build_query($params);
         }
         $rel = new Psr7\Uri($rel);
 
@@ -65,9 +66,8 @@ class ProxyController implements ContainerAwareInterface
 
         try {
             $response = $client->send($request, [
-              'http_errors' => false,
-              'stream' => true,
             ]);
+            $response = $response->withoutHeader('transfer-encoding');
             foreach ($response->getHeader('Set-Cookie') as $cookie) {
                 $cookie = SetCookie::fromString($cookie);
                 $cookie->setPath('/'.$path.$cookie->getPath());
